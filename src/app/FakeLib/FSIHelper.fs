@@ -99,7 +99,7 @@ let runBuildScriptWithFsiArgsAt workingDirectory printDetails (FsiArgs(fsiOption
     let fsiConfig = FsiEvaluationSession.GetDefaultConfiguration()
 
     let commonOptions = 
-        [ "fsi.exe"; "--noninteractive" ] @ fsiOptions @ scriptArgs
+        [ "fsi.exe"; "--noninteractive" ] @ fsiOptions @ [script] @ scriptArgs
         |> List.toArray
 
     let sbOut = new Text.StringBuilder()
@@ -113,7 +113,7 @@ let runBuildScriptWithFsiArgsAt workingDirectory printDetails (FsiArgs(fsiOption
         let session = FsiEvaluationSession.Create(fsiConfig, commonOptions, stdin, outStream, errStream)
 
         try 
-            session.EvalScript script
+            session.Run()
             true
         with    
         | _ -> 
